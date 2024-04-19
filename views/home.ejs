@@ -1,0 +1,95 @@
+<%- include("partials/header") -%>
+
+
+
+<section class="jumbotron text-center">
+     <div class="container">
+       <h1 id="olo" class="jumbotron-heading">Bienvenido</h1>
+       <p class="lead text-muted"><%= home %></p>
+     </div>
+   </section>
+
+
+
+
+
+
+<div class="row">
+<% posts.forEach(function(posts) { %>
+  <% const url = "/posts/" + posts._id %>
+  <% const tag1Url = "/tags/" + posts.tag1 %>
+  <% const tag2Url = "/tags/" + posts.tag2 %>
+  <% let month = posts.mm %>
+  <% switch(month){case 1:month="Enero";break;case 2:month="Febrero";break;case 3:month="Marzo";break;case 4:month="Abril";break;case 5:month="Mayo";break;case 6:month="Junio";break;case 7:month="Julio";break;case 8:month="Agosto";break;case 9:month="Septiembre";break;case 10:month="Octubre";break;case 11:month="Noviembre";break;case 12:month="Diciembre"} %>
+
+  <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+          <div class="date"><span class="day"><%= posts.dd %></span><span class="month"><%= month %></span></div>
+        <a href="<%= url %>"><img class="card-img-top" src="<%=posts.imageURL%>" alt="Card image cap"></a>
+          <div class="card-body">
+            <h1><%=  posts.title %></h1>
+            <% if (typeof posts.content == 'undefined' ) { %>
+                      <p> no content</p>
+                  <% } else { %>
+                    <% var noTags = posts.noTags.replace(/&nbsp;|&#39;/g, ' '); %>
+                    <p style="text-align: justify;"><%=  noTags.substring(0,300) %> ...</p>
+           <% } %>
+
+
+                      <a href="<%= url %>" class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Leer Más</a>
+                      <a href="<%= tag1Url %>" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">#<%= posts.tag1 %></a>
+                      <a href="<%= tag2Url %>" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">#<%= posts.tag2 %></a>
+
+         </div>
+     </div>
+   </div>
+          <%});%>
+
+
+</div>
+
+
+<% if (pages) { %>
+
+<!-- Pagination -->
+
+<nav>
+  <ul class="pagination">
+    <!-- First Page -->
+    <% if (current == 1) { %>
+    <li class="page-item disabled"><a class="page-link" href="#">Primer Pagina</a></li>
+    <% } else { %>
+    <li class="page-item"><a class="page-link" href="/">Primer Página</a></li>
+    <% } %>
+
+    <!-- Pages  -->
+    <% let i = (Number(current) > 5 ? Number(current) - 4 : 1)%>
+    <% if(i !== 1) {%>
+    <li class="page-item"><a class="page-link" href="#">...</a></li>
+
+    <% } %>
+    <% for(; i <= (Number(current) + 4) && i <= pages; i++) { %>
+      <% if (i == current) { %>
+      <li class="page-item"><a class="page-link" href="/index/<%= i %>"> <%= i %></a></li>
+<% } else {  %>
+  <li class="page-item"><a class="page-link" href="/index/<%= i %>"> <%= i %></a></li>
+<% } %>
+<% if (i == Number(current) + 4 && i < pages) { %>
+<li class="page-item"><a class="page-link" href="#">...</a></li>
+  <% }} %>
+    <!-- Last Page -->
+<% if (current == pages) { %>
+  <li class="page-item disabled"><a class="page-link" href="/index/<%=pages%>">Última Página</a></li>
+      <% } else { %>
+        <li class="page-item"><a class="page-link" href="/index/<%=pages%>">Última Página</a></li>
+          <% } }%>
+  </ul>
+</nav>
+
+
+
+
+
+
+
+<%- include("partials/footer") -%>
